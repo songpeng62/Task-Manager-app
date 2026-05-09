@@ -10,39 +10,44 @@ import androidx.appcompat.app.AppCompatActivity
 
 /**
  * LoginActivity handles user authentication.
+ * For now, it simply navigates to the MainActivity after validation.
  */
 class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Set the layout for the login screen
         setContentView(R.layout.activity_login)
 
-        // Find views by their IDs
+        // Link the Kotlin variables to the XML views using their IDs
         val etEmail: EditText = findViewById(R.id.etEmail)
         val etPassword: EditText = findViewById(R.id.etPassword)
         val btnLogin: Button = findViewById(R.id.btnLogin)
         val tvRegister: TextView = findViewById(R.id.tvRegister)
 
-        // Handle Login button click
+        // Set up the click listener for the Login button
         btnLogin.setOnClickListener {
             val email = etEmail.text.toString()
             val password = etPassword.text.toString()
 
-            // Simple validation for beginners
+            // Simple check to ensure fields are not empty
             if (email.isNotEmpty() && password.isNotEmpty()) {
-                // Navigate to MainActivity
+                // Create an Intent to navigate from LoginActivity to MainActivity
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
-                finish() // Close login page
+                
+                // Finish LoginActivity so the user cannot go back to it after logging in
+                finish()
             } else {
-                Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT).show()
+                // Show a small message if fields are empty
+                Toast.makeText(this, "Please enter both email and password", Toast.LENGTH_SHORT).show()
             }
         }
 
-        // Handle Register text click
+        // Set up the click listener for the Register link
         tvRegister.setOnClickListener {
-            // For now, just show a message as Register screen is not built yet
-            Toast.makeText(this, "Register Screen coming soon!", Toast.LENGTH_SHORT).show()
+            // For now, just show a message since the Register screen isn't ready
+            Toast.makeText(this, "Registration feature is coming soon!", Toast.LENGTH_SHORT).show()
         }
     }
 }
