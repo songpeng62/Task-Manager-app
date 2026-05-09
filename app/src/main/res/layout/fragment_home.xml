@@ -57,6 +57,7 @@
 
     </androidx.cardview.widget.CardView>
 
+    <!-- Button to View Homework List -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnViewHomework"
         android:layout_width="0dp"
@@ -74,5 +75,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cardTaskSummary" />
+
+    <!-- Button to Add New Homework -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnAddHomework"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="@color/secondaryColor"
+        android:padding="12dp"
+        android:text="Add Homework"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:cornerRadius="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnViewHomework" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

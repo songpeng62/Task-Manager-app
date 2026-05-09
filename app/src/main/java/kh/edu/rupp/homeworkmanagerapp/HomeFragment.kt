@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 
 /**
  * HomeFragment is the first screen shown inside MainActivity.
- * It displays a summary and allows users to navigate to the homework list.
+ * It provides a summary and buttons to navigate to the homework list or add new homework.
  */
 class HomeFragment : Fragment() {
 
@@ -20,27 +20,30 @@ class HomeFragment : Fragment() {
         // 1. Inflate the layout for this fragment (connect to fragment_home.xml)
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        // 2. Find the "View Homework" button by its ID
+        // 2. Find the buttons by their IDs
         val btnViewHomework: Button = view.findViewById(R.id.btnViewHomework)
+        val btnAddHomework: Button = view.findViewById(R.id.btnAddHomework)
 
-        // 3. Set a click listener to handle the button press
+        // 3. Set a click listener for the "View Homework" button
         btnViewHomework.setOnClickListener {
-            
-            // Create a new instance of HomeworkListFragment
+            // Replace HomeFragment with HomeworkListFragment
             val listFragment = HomeworkListFragment()
-
-            // Use FragmentTransaction to switch from HomeFragment to HomeworkListFragment
-            // We use parentFragmentManager to manage fragments within the Activity
             parentFragmentManager.beginTransaction()
-                // Replace the content of fragment_container with the new fragment
                 .replace(R.id.fragment_container, listFragment)
-                // Add this transaction to the back stack so the user can go back to the Home screen
-                .addToBackStack(null)
-                // Apply the changes
+                .addToBackStack(null) // Allows going back to Home
                 .commit()
         }
 
-        // Return the inflated view
+        // 4. Set a click listener for the "Add Homework" button
+        btnAddHomework.setOnClickListener {
+            // Replace HomeFragment with AddHomeworkFragment
+            val addFragment = AddHomeworkFragment()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, addFragment)
+                .addToBackStack(null) // Allows going back to Home
+                .commit()
+        }
+
         return view
     }
 }
