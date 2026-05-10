@@ -5,9 +5,7 @@ plugins {
 
 android {
     namespace = "kh.edu.rupp.homeworkmanagerapp"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "kh.edu.rupp.homeworkmanagerapp"
@@ -43,6 +41,11 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    
+    // Retrofit and GSON for API calls
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

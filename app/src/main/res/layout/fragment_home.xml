@@ -87,6 +87,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvQuoteTitle" />
 
+    <!-- Weather Title Section -->
+    <TextView
+        android:id="@+id/tvWeatherTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Today's Weather"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvQuoteContent" />
+
+    <!-- Weather Content Section -->
+    <TextView
+        android:id="@+id/tvWeatherContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Loading weather..."
+        android:textColor="#757575"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvWeatherTitle" />
+
     <!-- Button to View Homework List -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnViewHomework"
@@ -104,7 +131,7 @@
         app:cornerRadius="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvQuoteContent" />
+        app:layout_constraintTop_toBottomOf="@id/tvWeatherContent" />
 
     <!-- Button to Add New Homework -->
     <com.google.android.material.button.MaterialButton
