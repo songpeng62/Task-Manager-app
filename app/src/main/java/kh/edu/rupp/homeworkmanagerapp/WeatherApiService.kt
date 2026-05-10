@@ -7,15 +7,16 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 /**
- * WeatherApiService defines how we connect to the OpenWeatherMap API using Retrofit.
+ * WeatherApiService is an interface that defines how Retrofit will fetch 
+ * weather data from the OpenWeatherMap API.
  */
 interface WeatherApiService {
 
     /**
-     * Gets the current weather for a city.
-     * @param city The name of the city (e.g., "Phnom Penh")
-     * @param units The units for temperature (e.g., "metric" for Celsius)
-     * @param apiKey Your unique API key from OpenWeatherMap
+     * This function performs a GET request to fetch current weather.
+     * The parameters allow us to specify the city, units, and our API key.
+     * 
+     * Requirement Endpoint: data/2.5/weather?q=Phnom Penh&units=metric&appid=88fe09458dd46e0a2c0af2c5af6e94cb
      */
     @GET("data/2.5/weather")
     fun getCurrentWeather(
@@ -25,7 +26,7 @@ interface WeatherApiService {
     ): Call<WeatherResponse>
 
     companion object {
-        // The root URL for the OpenWeatherMap API
+        // The base URL for the OpenWeatherMap API
         private const val BASE_URL = "https://api.openweathermap.org/"
 
         /**
@@ -34,7 +35,7 @@ interface WeatherApiService {
         fun create(): WeatherApiService {
             val retrofit = Retrofit.Builder()
                 .baseUrl(BASE_URL)
-                // Use GSON to automatically convert the JSON response into our Kotlin data class
+                // Add Gson converter to automatically turn the JSON response into our WeatherResponse data class
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 

@@ -13,7 +13,7 @@ import retrofit2.Response
 
 /**
  * HomeFragment is the main dashboard for the user.
- * It displays a summary, a daily motivational quote, and current weather data.
+ * It displays an updated summary of tasks, a daily motivational quote, current weather, and education news.
  */
 class HomeFragment : Fragment() {
 
@@ -21,21 +21,23 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // 1. Inflate the layout for this fragment (fragment_home.xml)
+        // 1. Inflate the layout for this fragment (connect to fragment_home.xml)
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        // 2. Connect the UI elements to our code using their IDs
+        // 2. Connect the UI elements to our code using their IDs from the XML
         val btnViewHomework: Button = view.findViewById(R.id.btnViewHomework)
         val btnAddHomework: Button = view.findViewById(R.id.btnAddHomework)
+        val tvTaskSummary: TextView = view.findViewById(R.id.tvTaskSummary)
         val tvQuoteContent: TextView = view.findViewById(R.id.tvQuoteContent)
         val tvWeatherContent: TextView = view.findViewById(R.id.tvWeatherContent)
+        val tvNewsContent: TextView = view.findViewById(R.id.tvNewsContent)
 
         // 3. Set up the View Homework button to switch to the list screen
         btnViewHomework.setOnClickListener {
             val listFragment = HomeworkListFragment()
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, listFragment)
-                .addToBackStack(null)
+                .addToBackStack(null) // This lets the user go back to Home
                 .commit()
         }
 
@@ -44,17 +46,37 @@ class HomeFragment : Fragment() {
             val addFragment = AddHomeworkFragment()
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, addFragment)
-                .addToBackStack(null)
+                .addToBackStack(null) // This lets the user go back to Home
                 .commit()
         }
 
-        // 5. Load a motivational quote using Retrofit
-        loadMotivationalQuote(tvQuoteContent)
+        // 5. Update the "Pending Tasks" summary dynamically from saved data
+        updateTaskSummary(tvTaskSummary)
 
-        // 6. Load current weather data using Retrofit
+        // 6. Load data from APIs using Retrofit
+        loadMotivationalQuote(tvQuoteContent)
         loadWeatherData(tvWeatherContent)
+        loadEducationNews(tvNewsContent)
 
         return view
+    }
+
+    /**
+     * Reads saved homework from storage and updates the "pending tasks" count.
+     */
+    private fun updateTaskSummary(textView: TextView) {
+        val rawDataList = HomeworkStorage.readHomework(requireContext())
+        var pendingCount = 0
+        
+        for (line in rawDataList) {
+            val parts = line.split("|")
+            // Check if the task status is "Pending"
+            if (parts.size == 4 && parts[3].trim() == "Pending") {
+                pendingCount++
+            }
+        }
+        
+        textView.text = "You have $pendingCount pending tasks"
     }
 
     /**
@@ -62,19 +84,16 @@ class HomeFragment : Fragment() {
      */
     private fun loadMotivationalQuote(textView: TextView) {
         val apiService = QuoteApiService.create()
-
         apiService.getRandomQuote().enqueue(object : Callback<QuoteResponse> {
             override fun onResponse(call: Call<QuoteResponse>, response: Response<QuoteResponse>) {
                 if (response.isSuccessful) {
-                    val quoteBody = response.body()
-                    textView.text = "\"${quoteBody?.content}\""
+                    textView.text = "\"${response.body()?.content}\""
                 } else {
-                    textView.text = "Failed to load quote"
+                    textView.text = "Focus on your goals today!"
                 }
             }
-
             override fun onFailure(call: Call<QuoteResponse>, t: Throwable) {
-                textView.text = "Failed to load quote"
+                textView.text = "Stay organized and keep moving forward!"
             }
         })
     }
@@ -83,29 +102,57 @@ class HomeFragment : Fragment() {
      * This function fetches current weather for Phnom Penh and displays it.
      */
     private fun loadWeatherData(textView: TextView) {
-        // Initialize the Weather Retrofit service
         val apiService = WeatherApiService.create()
-
-        // Call the API (Replace 'YOUR_API_KEY' with a real key from OpenWeatherMap)
-        apiService.getCurrentWeather("Phnom Penh", "metric", "YOUR_API_KEY")
+        
+        // Using the real API key provided by the user
+        val apiKey = "88fe09458dd46e0a2c0af2c5af6e94cb"
+        
+        apiService.getCurrentWeather("Phnom Penh", "metric", apiKey)
             .enqueue(object : Callback<WeatherResponse> {
                 override fun onResponse(call: Call<WeatherResponse>, response: Response<WeatherResponse>) {
                     if (response.isSuccessful) {
                         val weather = response.body()
                         if (weather != null) {
-                            // Extract temperature and description
-                            val temp = weather.main.temp
+                            val temp = weather.main.temp.toInt()
                             val desc = weather.weather[0].description
-                            // Update the UI
                             textView.text = "$temp°C, $desc"
                         }
                     } else {
-                        textView.text = "Failed to load weather"
+                        textView.text = "Weather unavailable"
                     }
                 }
-
                 override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
                     textView.text = "Failed to load weather"
+                }
+            })
+    }
+
+    /**
+     * This function fetches latest education news and displays the top headline.
+     */
+    private fun loadEducationNews(textView: TextView) {
+        val apiService = NewsApiService.create()
+        
+        // Using the real NewsAPI key and parameters provided
+        val apiKey = "e22f8febc4f543dabc726177e0ddf035"
+        
+        apiService.getEducationNews("education", "en", "publishedAt", apiKey)
+            .enqueue(object : Callback<NewsResponse> {
+                override fun onResponse(call: Call<NewsResponse>, response: Response<NewsResponse>) {
+                    if (response.isSuccessful) {
+                        val news = response.body()
+                        if (news != null && news.articles.isNotEmpty()) {
+                            // Display the title of the first news article
+                            textView.text = news.articles[0].title
+                        } else {
+                            textView.text = "No news found at the moment"
+                        }
+                    } else {
+                        textView.text = "News temporarily unavailable"
+                    }
+                }
+                override fun onFailure(call: Call<NewsResponse>, t: Throwable) {
+                    textView.text = "Failed to load news"
                 }
             })
     }
