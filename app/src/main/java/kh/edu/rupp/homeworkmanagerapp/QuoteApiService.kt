@@ -6,12 +6,15 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
 /**
- * This interface defines the API endpoints for Retrofit.
- * It uses the QuoteResponse data class defined in QuoteResponse.kt.
+ * QuoteApiService defines the API endpoints for fetching motivational quotes.
+ * It uses Retrofit to make network requests.
  */
 interface QuoteApiService {
-    
-    // Define a GET request to the "random" endpoint to fetch a single quote
+
+    /**
+     * Fetches a random quote from the API.
+     * The @GET("random") annotation specifies the endpoint.
+     */
     @GET("random")
     fun getRandomQuote(): Call<QuoteResponse>
 
@@ -20,12 +23,13 @@ interface QuoteApiService {
         private const val BASE_URL = "https://api.quotable.io/"
 
         /**
-         * A helper function to create and return the Retrofit service instance.
+         * Creates and returns an instance of the QuoteApiService.
+         * This is where Retrofit is configured with the base URL and a JSON converter.
          */
         fun create(): QuoteApiService {
             val retrofit = Retrofit.Builder()
                 .baseUrl(BASE_URL)
-                // Use Gson to automatically convert the JSON response into our Kotlin object
+                // Add GsonConverterFactory to automatically parse JSON responses into Kotlin objects
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 

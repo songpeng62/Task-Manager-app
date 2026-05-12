@@ -1,24 +1,29 @@
 package kh.edu.rupp.homeworkmanagerapp
 
 /**
- * WeatherResponse is a data class used to map the JSON data received from the weather API.
+ * WeatherResponse is a data class used to map the JSON data received from the OpenWeatherMap API.
  * It contains nested classes to match the structure of the API response.
  */
 data class WeatherResponse(
-    val main: MainData,        // Contains temperature info
-    val weather: List<WeatherData> // Contains weather description info
+    // The "main" object in the JSON contains temperature information
+    val main: MainData,
+    
+    // The "weather" field in the JSON is an array (List), usually containing one item
+    val weather: List<WeatherData>
 )
 
 /**
- * Maps the "main" object from the JSON.
+ * Maps the "main" part of the weather JSON.
  */
 data class MainData(
-    val temp: Double // The current temperature
+    // temp is a Double value representing the current temperature
+    val temp: Double
 )
 
 /**
- * Maps the "weather" array elements from the JSON.
+ * Maps the items inside the "weather" array in the JSON.
  */
 data class WeatherData(
-    val description: String // Example: "clear sky", "light rain"
+    // description is a String explaining the weather (e.g., "clear sky", "light rain")
+    val description: String
 )
