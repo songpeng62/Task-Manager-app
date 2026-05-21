@@ -48,6 +48,18 @@
         android:textColor="#757575"
         android:textSize="14sp" />
 
+    <!-- Empty State -->
+    <TextView
+        android:id="@+id/tvEmptyState"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:gravity="center"
+        android:text="No homework added yet&#10;Tap Add Homework to create your first task"
+        android:textColor="#757575"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
     <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerHomework"
