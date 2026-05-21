@@ -3,82 +3,102 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="6dp"
     app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="4dp">
+    app:cardCornerRadius="18dp"
+    app:cardElevation="6dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="20dp">
 
+        <!-- Subject -->
         <TextView
             android:id="@+id/tvSubject"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Mathematics"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="22sp"
             android:textStyle="bold" />
 
+        <!-- Homework Title -->
         <TextView
             android:id="@+id/tvHomeworkTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="6dp"
             android:text="Complete Algebra Worksheet"
             android:textColor="#555555"
             android:textSize="16sp" />
 
+        <!-- Deadline -->
         <TextView
             android:id="@+id/tvDeadline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
             android:text="Due: Monday"
             android:textColor="#757575"
             android:textSize="14sp" />
 
+        <!-- Status -->
         <TextView
             android:id="@+id/tvStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Status: Pending"
+            android:layout_marginTop="10dp"
+            android:background="#EEE5FF"
+            android:paddingStart="12dp"
+            android:paddingTop="6dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="6dp"
+            android:text="Pending"
             android:textColor="@color/primaryColor"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:textStyle="bold" />
 
-        <!-- Container for Buttons -->
+        <!-- Button Row -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="18dp"
+            android:gravity="end"
             android:orientation="horizontal">
 
             <!-- Edit Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnEditHomework"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="@color/primaryColor"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:text="Edit"
-                android:textColor="@color/primaryColor"
-                android:textSize="12sp" />
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:cornerRadius="12dp" />
 
             <!-- Delete Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnDeleteHomework"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="#E53935"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:text="Delete"
-                android:textColor="#D32F2F"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
                 android:textSize="12sp"
-                app:rippleColor="#10D32F2F" />
+                app:cornerRadius="12dp" />
 
         </LinearLayout>
 
