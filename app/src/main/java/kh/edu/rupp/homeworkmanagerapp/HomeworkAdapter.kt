@@ -8,23 +8,18 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-/**
- * HomeworkAdapter connects homework data
- * to the RecyclerView.
- */
 class HomeworkAdapter(
 
     private val homeworkList: List<HomeworkModel>,
 
     private val editListener: (HomeworkModel) -> Unit,
 
-    private val deleteListener: (HomeworkModel) -> Unit
+    private val deleteListener: (HomeworkModel) -> Unit,
+
+    private val completeListener: (HomeworkModel) -> Unit
 
 ) : RecyclerView.Adapter<HomeworkAdapter.HomeworkViewHolder>() {
 
-    /**
-     * ViewHolder holds item views.
-     */
     class HomeworkViewHolder(itemView: View)
         : RecyclerView.ViewHolder(itemView) {
 
@@ -45,11 +40,11 @@ class HomeworkAdapter(
 
         val btnDelete: Button =
             itemView.findViewById(R.id.btnDeleteHomework)
+
+        val btnComplete: Button =
+            itemView.findViewById(R.id.btnCompleteHomework)
     }
 
-    /**
-     * Create RecyclerView item layout
-     */
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -65,9 +60,6 @@ class HomeworkAdapter(
         return HomeworkViewHolder(view)
     }
 
-    /**
-     * Bind homework data to item layout
-     */
     override fun onBindViewHolder(
         holder: HomeworkViewHolder,
         position: Int
@@ -88,17 +80,39 @@ class HomeworkAdapter(
         holder.tvStatus.text =
             "Status: ${homework.status}"
 
-        // Edit button
+        // Status color
+        if (homework.status == "Completed") {
+
+            holder.tvStatus.setTextColor(
+                android.graphics.Color.parseColor("#388E3C")
+            )
+
+            holder.btnComplete.visibility =
+                View.GONE
+
+        } else {
+
+            holder.tvStatus.setTextColor(
+                android.graphics.Color.parseColor("#6200EE")
+            )
+
+            holder.btnComplete.visibility =
+                View.VISIBLE
+        }
+
+        // Edit
         holder.btnEdit.setOnClickListener {
 
             editListener(homework)
         }
 
-        // Delete button with confirmation dialog
+        // Delete with dialog
         holder.btnDelete.setOnClickListener {
 
             AlertDialog.Builder(holder.itemView.context)
+
                 .setTitle("Delete Homework")
+
                 .setMessage(
                     "Are you sure you want to delete this homework?"
                 )
@@ -112,11 +126,14 @@ class HomeworkAdapter(
 
                 .show()
         }
+
+        // Complete
+        holder.btnComplete.setOnClickListener {
+
+            completeListener(homework)
+        }
     }
 
-    /**
-     * Return total item count
-     */
     override fun getItemCount(): Int {
 
         return homeworkList.size

@@ -29,15 +29,20 @@ class HomeworkListFragment : Fragment() {
         view: View,
         savedInstanceState: Bundle?
     ) {
+
         super.onViewCreated(view, savedInstanceState)
 
         // Back button
-        val btnBackHome: View = view.findViewById(R.id.btnBackHome)
+        val btnBackHome: View =
+            view.findViewById(R.id.btnBackHome)
 
         btnBackHome.setOnClickListener {
 
             parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, HomeFragment())
+                .replace(
+                    R.id.fragment_container,
+                    HomeFragment()
+                )
                 .commit()
         }
 
@@ -45,12 +50,16 @@ class HomeworkListFragment : Fragment() {
         loadAndDisplayHomework(view)
     }
 
-    private fun loadAndDisplayHomework(view: View) {
+    private fun loadAndDisplayHomework(
+        view: View
+    ) {
 
         // Read saved homework
-        val rawDataList = HomeworkStorage.readHomework(requireContext())
+        val rawDataList =
+            HomeworkStorage.readHomework(requireContext())
 
-        val homeworkList = mutableListOf<HomeworkModel>()
+        val homeworkList =
+            mutableListOf<HomeworkModel>()
 
         for (line in rawDataList) {
 
@@ -70,25 +79,33 @@ class HomeworkListFragment : Fragment() {
         }
 
         // Connect views
-        val recyclerHomework: RecyclerView =
+        val recyclerHomework:
+                RecyclerView =
             view.findViewById(R.id.recyclerHomework)
 
-        val tvEmptyState: TextView =
+        val tvEmptyState:
+                TextView =
             view.findViewById(R.id.tvEmptyState)
 
         recyclerHomework.layoutManager =
             LinearLayoutManager(requireContext())
 
-        // Show empty message if no homework
+        // Empty state
         if (homeworkList.isEmpty()) {
 
-            tvEmptyState.visibility = View.VISIBLE
-            recyclerHomework.visibility = View.GONE
+            tvEmptyState.visibility =
+                View.VISIBLE
+
+            recyclerHomework.visibility =
+                View.GONE
 
         } else {
 
-            tvEmptyState.visibility = View.GONE
-            recyclerHomework.visibility = View.VISIBLE
+            tvEmptyState.visibility =
+                View.GONE
+
+            recyclerHomework.visibility =
+                View.VISIBLE
         }
 
         // Adapter
@@ -96,17 +113,23 @@ class HomeworkListFragment : Fragment() {
 
             homeworkList,
 
+            // Edit
             editListener = { selectedHomework ->
 
                 val editFragment =
-                    EditHomeworkFragment.newInstance(selectedHomework)
+                    EditHomeworkFragment
+                        .newInstance(selectedHomework)
 
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, editFragment)
+                    .replace(
+                        R.id.fragment_container,
+                        editFragment
+                    )
                     .addToBackStack(null)
                     .commit()
             },
 
+            // Delete
             deleteListener = { selectedHomework ->
 
                 HomeworkStorage.deleteHomework(
@@ -117,6 +140,24 @@ class HomeworkListFragment : Fragment() {
                 Toast.makeText(
                     requireContext(),
                     "Homework Deleted",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                // Refresh list
+                loadAndDisplayHomework(view)
+            },
+
+            // Complete
+            completeListener = { selectedHomework ->
+
+                HomeworkStorage.markHomeworkCompleted(
+                    requireContext(),
+                    selectedHomework
+                )
+
+                Toast.makeText(
+                    requireContext(),
+                    "Homework Completed",
                     Toast.LENGTH_SHORT
                 ).show()
 
